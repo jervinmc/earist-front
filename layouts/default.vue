@@ -26,17 +26,49 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
+    color="#404040"
      v-if="$route.name!='index'"
       :clipped-left="clipped"
       fixed
       app
     >
-      <v-spacer></v-spacer>
-    <div @click="goHome">
-      <v-icon>mdi-home</v-icon>Home
+    <div class="white--text">
+      <v-row>
+        <v-col align-self="center">
+          EARIST
+        </v-col>
+        <v-col>
+            <v-img height="50" width="50" src="./CAFA LOGO.png"></v-img>
+        </v-col>
+        <v-col>
+            <v-img height="50" width="50" src="./CAS LOGO.png"></v-img>
+        </v-col>
+        <v-col>
+            <v-img height="50" width="50" src="./CBPA LOGO.png"></v-img>
+        </v-col>
+        <v-col>
+            <v-img height="50" width="50" src="./CED LOGO.png"></v-img>
+        </v-col>
+        <v-col>
+            <v-img height="50" width="50" src="./CEN LOGO.png"></v-img>
+        </v-col>
+        <v-col>
+            <v-img height="50" width="50" src="./CEN-SG LOGO.png"></v-img>
+        </v-col>
+        <v-col>
+            <v-img height="50" width="50" src="./CHTM LOGO.png"></v-img>
+        </v-col>
+        <v-col>
+            <v-img height="50" width="50" src="./CIT LOGO.png"></v-img>
+        </v-col>
+      </v-row>
     </div>
-    <div @click="logoutPage">
-      <v-icon class="pl-5">mdi-logout</v-icon>Logout
+      <v-spacer></v-spacer>
+    <div @click="goHome" class="white--text">
+      <v-icon color="white">mdi-home</v-icon>Home
+    </div>
+    <div @click="logoutPage" class="white--text">
+      <v-icon class="pl-5" dark>mdi-logout</v-icon>Logout
     </div>
     </v-app-bar>
     <v-main>

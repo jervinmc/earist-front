@@ -98,9 +98,14 @@ export default {
   },
   methods: {
     signIn(){
+       if(this.login.username!='admin@earist.com' && this.login.password!='wew123WEW'){
+        alert("Wrong Credentials")
+        return
+      }
       window.location.href="/directory"
     },
     async submitHandler() {
+      return
       const valid = this.$refs.form.validate()
       if (valid) {
         try {

@@ -148,8 +148,66 @@
           <v-row>
               <v-col align="start">
                   <div align="start" class="text-h6"><b>Room Management</b></div>
+                  <div>
+         <v-col align="end">
+          <v-row>
+            <v-col cols="auto">
+              <div align="end">
+                <v-btn
+                  depressed
+                  color="#404040"
+                  dark
+                  @click="addRow"
+                  :loading="isLoaded"
+                >
+                 <v-icon>mdi-plus</v-icon> Row
+                </v-btn>
+              </div>
+            </v-col>
+            <v-col cols="auto">
+              <div align="end">
+                <v-btn
+                  depressed
+                  color="#404040"
+                  dark
+                  @click="addColumn"
+                  :loading="isLoaded"
+                >
+                   <v-icon>mdi-plus</v-icon> Column
+                </v-btn>
+              </div>
+            </v-col>
+            <v-col cols="auto">
+              <div align="end">
+                <v-btn
+                  depressed
+                  color="#404040"
+                  dark
+                  @click="isOpen = true"
+                  :loading="isLoaded"
+                >
+                  Build
+                </v-btn>
+              </div>
+            </v-col>
+            <v-col cols="auto">
+              <div align="end">
+                <v-btn
+                  depressed
+                  color="#404040"
+                  dark
+                  @click="saveForm"
+                  :loading="isLoaded"
+                >
+                  Save
+                </v-btn>
+              </div>
+            </v-col>
+          </v-row>
+        </v-col>
+      </div>
               </v-col>
-            <v-col>
+            <!-- <v-col>
               <div align="end">
                 <v-btn
                   depressed
@@ -174,7 +232,7 @@
                   Save
                 </v-btn>
               </div>
-            </v-col>
+            </v-col> -->
           </v-row>
         </v-col>
       </v-row>
@@ -246,6 +304,25 @@ export default {
     };
   },
   methods: {
+    addRow(){
+        this.tiles.push({ label: '', column: [] });
+        for (let i = 0; i < parseInt(this.tiles[0]['column'].length); i++) {
+          this.tiles[this.tiles.length-1]["column"].push({
+            label: "",
+            image: "",
+            id: `${i} - ${1}`,
+          });
+        }
+    },
+    addColumn(){
+       for(let x in this.tiles){
+         this.tiles[x]['column'].push({
+            label: "",
+            image: "",
+            id: `${''} - ''`,
+          })
+       }
+    },
       viewRoom(item){
           this.descriptionItem = item.description
           this.isOpenRoom = true

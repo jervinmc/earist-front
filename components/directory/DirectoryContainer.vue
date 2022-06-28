@@ -122,14 +122,40 @@
           <div class="text-h5" align="start">
           <b>Building Management </b>
       </div>
-        </v-col>
-        <v-col align="end">
+      <div>
+         <v-col align="end">
           <v-row>
             <v-col cols="auto">
               <div align="end">
                 <v-btn
                   depressed
-                  color="#f0932b"
+                  color="#404040"
+                  dark
+                  @click="addRow"
+                  :loading="isLoaded"
+                >
+                 <v-icon>mdi-plus</v-icon> Row
+                </v-btn>
+              </div>
+            </v-col>
+            <v-col cols="auto">
+              <div align="end">
+                <v-btn
+                  depressed
+                  color="#404040"
+                  dark
+                  @click="addColumn"
+                  :loading="isLoaded"
+                >
+                   <v-icon>mdi-plus</v-icon> Column
+                </v-btn>
+              </div>
+            </v-col>
+            <v-col cols="auto">
+              <div align="end">
+                <v-btn
+                  depressed
+                  color="#404040"
                   dark
                   @click="isOpen = true"
                   :loading="isLoaded"
@@ -142,7 +168,7 @@
               <div align="end">
                 <v-btn
                   depressed
-                  color="#f0932b"
+                  color="#404040"
                   dark
                   @click="saveForm"
                   :loading="isLoaded"
@@ -153,8 +179,12 @@
             </v-col>
           </v-row>
         </v-col>
+      </div>
+        </v-col>
+       
       </v-row>
-        <div align="center">
+        <v-img src="/NEW_2.png" height="780" width="750">
+          <div align="center">
           <v-row
             no-gutters
             v-for="(row, indexRow) in tiles"
@@ -168,18 +198,21 @@
               :key="indexColumn"
               @click="editTile(indexColumn, indexRow)"
             >
-              <v-card height="150" width="150" class="pa-5">
+              <v-card height="150" width="150" class="pa-5" color="transparent" elevation="1">
                 <div align="end" v-if="col.label != ''">
                   <v-icon @click="viewFloor(col.label,col.floor)">mdi-stairs</v-icon>
                 </div>
-                <b>{{ col.label }}</b>
-                <div v-if="col.label != ''">
-                  <v-img height="60" width="60" :src="`https://2.img-dpreview.com/files/p/E~C1000x0S4000x4000T1200x1200~articles/3925134721/0266554465.jpeg`"></v-img>
-                </div>
+              <div class="pl-10">
+                  <b style="font-size:10px">{{ col.label }}</b>
+              </div>
+                <!-- <div v-if="col.label != ''">
+                  <v-img height="60" width="60" :src="`/${col.image}`"></v-img>
+                </div> -->
               </v-card>
             </v-col>
           </v-row>
         </div>
+        </v-img>
       </v-card>
     </v-card>
   </div>
@@ -192,6 +225,7 @@ export default {
   },
   data() {
     return {
+      buttonLoad:false,
       isLoaded: false,
       buttonLoad: false,
       labelName: "",
@@ -210,6 +244,25 @@ export default {
     };
   },
   methods: {
+    addRow(){
+        this.tiles.push({ label: '', column: [] });
+        for (let i = 0; i < parseInt(this.tiles[0]['column'].length); i++) {
+          this.tiles[this.tiles.length-1]["column"].push({
+            label: "",
+            image: "",
+            id: `${i} - ${1}`,
+          });
+        }
+    },
+    addColumn(){
+       for(let x in this.tiles){
+         this.tiles[x]['column'].push({
+            label: "",
+            image: "",
+            id: `${''} - ''`,
+          })
+       }
+    },
     viewFloor(label,floor){
       window.location.href=`/floor?building_name=${label}&floor=${floor}`
     },
@@ -232,7 +285,8 @@ export default {
           console.log(JSON.parse(res.data[0]["tiles"]));
         });
     },
-    async saveForm() {
+     saveForm() {
+            this.buttonLoad = true
       var characters = "abcdefghijklmnopqrstuvwxyz0123456789";
       var result = "";
       var chaactersLength = characters.length;
@@ -242,14 +296,16 @@ export default {
           Math.floor(Math.random() * chaactersLength)
         );
       }
-      for (let key in this.tiles) {
+
+      for (let key in this.tiles) {``
         this.tiles[key].formatID = result;
-        const res = await this.$axios
+        const res =  this.$axios
           .post(
             `/building/`,
             {
               tiles: JSON.stringify(this.tiles[key].column),
               formatID: result,
+              row: key,
               floor: this.tiles[key].floor,
             },
             {
@@ -258,8 +314,13 @@ export default {
               },
             }
           )
-          .then((res) => {});
+          .then((res) => {
+           
+
+          });
       }
+       this.buttonLoad =false
+       alert('Successfully Saved.')
     },
     cancel() {},
     saveInput() {
@@ -267,17 +328,17 @@ export default {
       this.tiles[this.rowTile]["column"][this.columnTile]["label"] =
         this.labelName;
       if (this.floors == 1) {
-        image = "1F_Apilado.png";
+        image = "1F_Apilado_KB.png";
       } else if (this.floors == 2) {
-        image = "2F_Old Laboratory HS.png";
+        image = "2F_Old Laboratory HS_KB.png";
       } else if (this.floors == 3) {
-        image = "3F_Regala.png";
+        image = "3FLRS_Regala_KB.png";
       } else if (this.floors == 4) {
-        image = "4F_Nudas.png";
+        image = "4FLRS_Nudas_KB.png";
       } else if (this.floors == 5) {
-        image = "5F_CIT.png";
+        image = "5F_CIT_KB.png";
       } else if (this.floors == 6) {
-        image = "6F_Ceafa.png";
+        image = "6F_Ceafa_KB.png";
       }
       this.tiles[this.rowTile]["column"][this.columnTile]["image"] = image;
       this.tiles[this.rowTile]["column"][this.columnTile]["floor"] = this.floors;
@@ -289,6 +350,10 @@ export default {
       this.rowTile = row;
     },
     saveDesign() {
+      if(parseInt(this.events.column>5)){
+        alert('Limited of 5 Column')
+        return
+      }
       this.tiles = [];
       for (let x = 0; x < parseInt(this.events.row); x++) {
         this.tiles.push({ label: x, column: [] });
